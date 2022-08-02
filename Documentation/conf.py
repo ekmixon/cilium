@@ -76,7 +76,7 @@ versionwarning_api_url = "https://docs.cilium.io/"
 go_release = open("../GO_VERSION", "r").read().strip()
 
 # The image tag for Cilium docker images
-image_tag = 'v' + release
+image_tag = f'v{release}'
 
 # Fetch the docs version from an environment variable.
 # Map latest -> master.
@@ -90,11 +90,11 @@ if not branch or branch == 'latest':
 elif branch == 'stable':
     branch = release
     archive_name = release
-    chart_release = 'cilium/cilium --version ' + release
+    chart_release = f'cilium/cilium --version {release}'
     tags.add('stable')
 else:
     archive_name = branch
-    chart_release = 'cilium/cilium --version ' + release
+    chart_release = f'cilium/cilium --version {release}'
     tags.add('stable')
 relinfo = semver.parse_version_info(release)
 current_release = '%d.%d' % (relinfo.major, relinfo.minor)
@@ -104,13 +104,16 @@ else:
     next_release = current_release
 githubusercontent = 'https://raw.githubusercontent.com/cilium/cilium/'
 scm_web = githubusercontent + branch
-jenkins_branch = 'https://jenkins.cilium.io/view/Cilium-v' + current_release
+jenkins_branch = f'https://jenkins.cilium.io/view/Cilium-v{current_release}'
 github_repo = 'https://github.com/cilium/cilium/'
-archive_filename = archive_name + '.tar.gz'
-archive_link = github_repo + 'archive/' + archive_filename
+archive_filename = f'{archive_name}.tar.gz'
+archive_link = f'{github_repo}archive/{archive_filename}'
 archive_name = 'cilium-' + archive_name.strip('v')
-project_link = github_repo + 'projects?query=is:open+' + next_release
-backport_format = github_repo + 'pulls?q=is:open+is:pr+label:%s/' + current_release
+project_link = f'{github_repo}projects?query=is:open+{next_release}'
+backport_format = (
+    f'{github_repo}pulls?q=is:open+is:pr+label:%s/{current_release}'
+)
+
 
 # Store variables in the epilogue so they are globally available.
 rst_epilog = """

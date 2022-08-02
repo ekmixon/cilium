@@ -28,7 +28,7 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 class DoorManager(cloudcity_pb2_grpc.DoorManagerServicer):
 
   def GetName(self, request, context):
-    return cloudcity_pb2.DoorNameReply(name='Spaceport Door #%s' % request.door_id)
+    return cloudcity_pb2.DoorNameReply(name=f'Spaceport Door #{request.door_id}')
 
   def GetLocation(self, request, context): 
     return cloudcity_pb2.DoorLocationReply(lat=10.2222, long=68.8788)

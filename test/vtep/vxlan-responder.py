@@ -107,4 +107,4 @@ if __name__ == '__main__':
 
     print("Scapy vxlan responder")
     scapy.all.conf.iface = BRIDGE
-    sniff(filter=("port %s") % (UDPPORT), prn=dispatcher_callback)
+    sniff(filter=f"port {UDPPORT}", prn=dispatcher_callback)

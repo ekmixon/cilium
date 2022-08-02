@@ -7,6 +7,7 @@ This script requires PyGithub to be installed
 GITHUB_TOKEN env variable is used to access GH API
 """
 
+
 import argparse
 import os
 import sys
@@ -38,34 +39,38 @@ old_label_len = len(pr_labels)
 
 cilium_labels = cilium.get_labels()
 
-print("Setting labels for PR {}... ".format(pr_number), end="")
+print(f"Setting labels for PR {pr_number}... ", end="")
 if action == "pending":
-    pr_labels = [l for l in pr_labels
-                 if l.name != "needs-backport/"+version]
+    pr_labels = [l for l in pr_labels if l.name != f"needs-backport/{version}"]
     if old_label_len - 1 != len(pr_labels):
-        print("needs-backport/"+version+" label not found in PR, exiting")
+        print(f"needs-backport/{version} label not found in PR, exiting")
         sys.exit(1)
 
     pr_labels.append(
-        [l for l in cilium_labels if l.name == "backport-pending/"+version][0])
+        [l for l in cilium_labels if l.name == f"backport-pending/{version}"][
+            0
+        ]
+    )
+
 
     if old_label_len != len(pr_labels):
-        print("error adding backport-pending/"+version+" label to PR, exiting")
+        print(f"error adding backport-pending/{version} label to PR, exiting")
         sys.exit(2)
     pr.set_labels(*pr_labels)
 
 if action == "done":
-    pr_labels = [l for l in pr_labels
-                 if l.name != "backport-pending/"+version]
+    pr_labels = [l for l in pr_labels if l.name != f"backport-pending/{version}"]
     if old_label_len - 1 != len(pr_labels):
-        print("backport-pending/"+version+" label not found in PR, exiting")
+        print(f"backport-pending/{version} label not found in PR, exiting")
         sys.exit(1)
 
     pr_labels.append(
-        [l for l in cilium_labels if l.name == "backport-done/"+version][0])
+        [l for l in cilium_labels if l.name == f"backport-done/{version}"][0]
+    )
+
 
     if old_label_len != len(pr_labels):
-        print("error adding backport-done/"+version+" label to PR, exiting")
+        print(f"error adding backport-done/{version} label to PR, exiting")
         sys.exit(2)
     pr.set_labels(*pr_labels)
 

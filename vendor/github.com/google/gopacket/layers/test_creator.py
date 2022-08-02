@@ -28,15 +28,15 @@ class Packet(object):
     for line in packet_lines[1:]:
       m = re.match(r'\s+0x[a-f\d]+:\s+((?:[\da-f]{2,4}\s)*)', line, re.IGNORECASE)
       if m is None: continue
-      for hexpart in m.group(1).split():
-        packet_bytes.append(base64.b16decode(hexpart.upper()))
+      packet_bytes.extend(
+          base64.b16decode(hexpart.upper()) for hexpart in m[1].split())
     return ''.join(packet_bytes)
 
   def Test(self, name, link_type):
     """Yields a test using this packet, as a set of lines."""
-    yield '// testPacket%s is the packet:' % name
+    yield f'// testPacket{name} is the packet:'
     for line in self.packet_lines:
-      yield '//   ' + line
+      yield f'//   {line}'
     yield 'var testPacket%s = []byte{' % name
     data = list(self.data)
     while data:

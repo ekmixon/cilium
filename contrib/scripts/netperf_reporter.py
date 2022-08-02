@@ -34,8 +34,7 @@ def trim_filename(filename):
     space_pattern = re.compile(r"\s")
 
     with open(filename) as fp:
-        for row in fp:
-            result.append("{0}\n".format(space_pattern.sub("", row)))
+        result.extend("{0}\n".format(space_pattern.sub("", row)) for row in fp)
     return result
 
 
@@ -52,7 +51,7 @@ def read_data(filename):
     for row in csv_reader:
         key = re.sub(r"[0-9]", "", row.get(MSS_key))
         for mtu in row.keys():
-            if mtu == "" or mtu == MSS_key:
+            if mtu in ["", MSS_key]:
                 continue
             val = row.get(mtu)
             if val is None or val == "":
