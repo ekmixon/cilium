@@ -30,6 +30,6 @@ sphinxcontrib-websupport==1.2.4
 sphinx-tabs==3.3.1
 sphinx-version-warning==1.1.2
 typing==3.7.4.3
-urllib3==1.26.8
+urllib3==1.26.18
 yamllint==1.26.3
 rstcheck==3.3.1
